@@ -10,7 +10,7 @@ Register Page
     <form method="POST">
 
         <img class="mb-4" src="https://www.shutterstock.com/image-vector/continuous-one-line-drawing-writing-600nw-2618214539.jpg" 
-             alt="" width="72" height="57">
+             alt="" width="300" height="150" style="display: block; margin-left: auto; margin-right: auto;">
 
         <h1 class="h3 mb-3 fw-normal text-center">Registre-se</h1>
 
@@ -22,8 +22,8 @@ Register Page
         </div>
 
         <div class="form-floating mb-3">
-            {{ form.user(class="form-control", placeholder=" ") }}
-            {{ form.user.label }}
+            {{ form.email(class="form-control", placeholder=" ") }}
+            {{ form.email.label }}
         </div>
 
         <div class="form-floating mb-3">
