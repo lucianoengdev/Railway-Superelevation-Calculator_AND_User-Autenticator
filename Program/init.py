@@ -1,20 +1,24 @@
 from flask import Flask
-import sqlite3
+from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 
-con = sqlite3.connect('users.db')
-cur = con.cursor()
-cur.execute('''CREATE TABLE user(id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                name TEXT NOT NULL, 
-                                email TEXT UNIQUE NOT NULL,
-                                password TEXT NOT NULL)''')
-cur.close()
-con.close()
-
-
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, "users.db")
 app.config['SECRET_KEY'] = '123456'
+
+
+db = SQLAlchemy(app)
+
+from .models import User
+
+
 
 
 from Program import forms
 from Program import routes
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
