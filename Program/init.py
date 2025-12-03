@@ -1,8 +1,12 @@
 from flask import Flask
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.login_view = "login"
+login_manager.init_app(app)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, "users.db")
