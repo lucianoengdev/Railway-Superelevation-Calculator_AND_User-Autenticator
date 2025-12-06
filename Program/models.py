@@ -15,11 +15,11 @@ class User(db.Model, UserMixin):
     def password(self):
         raise AttributeError("A senha não pode ser acessada")
 
-    @property.setter
+    @password.setter
     def password(self, plain_text_password):
         self.password_hash = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')
 
     def check_password_correction(self, attemped_password):
-        return bcrypt.check_password_hash(self.password, attemped_password)
+        return bcrypt.check_password_hash(self.password_hash, attemped_password)
 
         
