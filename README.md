@@ -3,15 +3,22 @@
 ## 📖 About the Project
 This project is a robust web application designed for **Transport Engineers** and students. It combines a secure user authentication system with a specialized calculator for **Railway Geometric Design**. 
 
-The main goal is to automate the complex calculations required to determine the correct Superelevation of a railway curve, ensuring the safety and comfort of passengers and cargo.
+The main goal is to automate the complex calculations required to determine the correct Superelevation and Speed Limits of a railway curve, ensuring the safety and comfort of passengers and cargo.
 
 ## ⚙️ Features
 * User Authentication: Secure Login, Registration, and Logout system using password hashing.
-* Railway Calculator: Determines the required superelevation ($h$) based on four critical engineering criteria:
+* Superelevation Calculator: Determines the required superelevation ($h$) based on four critical engineering criteria:
     1.  Theoretical Criterion: Equilibrium of centrifugal force.
     2.  Safety Criterion (Dynamic): Stability of the vehicle while in motion.
     3.  Safety Criterion (Static): Stability of the vehicle when stopped on the curve.
     4.  Comfort Criterion: Limits the uncompensated lateral acceleration for passengers.
+* Speed & Geometry Calculator (New): Validates the operational limits of a curve based on track geometry:
+    1.  Maximum Speed ($V_{max}$): Calculates limits based on Safety and Comfort.
+    2.  Minimum Speed ($V_{min}$): Determines the minimum speed to prevent internal tipping.
+    3.  Minimum Radius ($R_{min}$): Calculates the strictest radius required for a desired speed.
+    4.  Gauge Widening (Superlargura): Calculates necessary gauge widening for tight curves.
+* Responsive Interface: Clean UI built with Bootstrap 5, featuring tabbed navigation.
+
 * Responsive Interface: Clean UI built with Bootstrap 5.
 
 ## 🛠️ Technologies Used
@@ -26,7 +33,10 @@ The main goal is to automate the complex calculations required to determine the 
 The ambition of this project is to become a handy, quick-reference tool for railway engineers to validate track parameters instantly. It aims to bridge the gap between theoretical formulas and practical, on-the-fly verification in the field or office.
 
 ## 📍 Current Stage
-Status: Finished (v1.0)
+Status: Active (v1.1.0)
+* v1.0: Superelevation Calculator & Auth System.
+* v1.1: Added Speed & Geometry Calculator module.
+
 The application is fully functional. Users can register, log in, perform calculations with real-world variables (Speed, Radius, Gauge, etc.), and view the results immediately.
 
 ## 🐛 Known Issues & Future Improvements
