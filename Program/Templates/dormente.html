@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block tittle %}
+    Dimensionamento de Dormente
+{% endblock %}
+
+{% block style %}
+<style>
+    .result-card {
+        background-color: #f7e6d4; /* Tom madeira claro */
+        border-left: 5px solid #8d6e63; /* Marrom */
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+    .result-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #5d4037;
+    }
+    .btn-wood {
+        background-color: #795548;
+        color: white;
+    }
+    .btn-wood:hover {
+        background-color: #5d4037;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-md-5">
+            <h2 class="mb-4" style="color: #795548;">Cálculo de Dormente</h2>
+            <p class="text-muted">Dimensionamento à flexão de dormentes de madeira.</p>
+            
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                
+                <h5 class="mb-3 border-bottom pb-2">Cargas</h5>
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.carga_por_eixo(class="form-control", placeholder=" ") }}
+                            {{ form.carga_por_eixo.label }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.velocidade(class="form-control", placeholder=" ") }}
+                            {{ form.velocidade.label }}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            {{ form.distancia_eixos_veiculo(class="form-control", placeholder=" ") }}
+                            {{ form.distancia_eixos_veiculo.label }}
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mb-3 border-bottom pb-2 mt-2">Geometria</h5>
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            {{ form.taxa_dormentacao(class="form-control", placeholder=" ") }}
+                            <label style="font-size: 0.8em;">Taxa (dorm/km)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            {{ form.distancia_eixo_trilhos(class="form-control", placeholder=" ") }}
+                            <label style="font-size: 0.8em;">Dist. Trilhos (B)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            {{ form.largura_placa(class="form-control", placeholder=" ") }}
+                            <label style="font-size: 0.8em;">Larg. Placa (y)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mb-3 border-bottom pb-2 mt-2">Dimensões do Dormente</h5>
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            {{ form.comprimento_dormente(class="form-control", placeholder=" ") }}
+                            <label>Comp. (L)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            {{ form.largura_dormente(class="form-control", placeholder=" ") }}
+                            <label>Largura (b)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            {{ form.altura_dormente(class="form-control", placeholder=" ") }}
+                            <label>Altura (t)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            {{ form.tensao_admissivel(class="form-control", placeholder=" ") }}
+                            {{ form.tensao_admissivel.label }}
+                        </div>
+                    </div>
+                </div>
+
+                {{ form.submit(class="btn btn-wood w-100 py-3 mt-3 fw-bold") }}
+            </form>
+        </div>
+
+        <div class="col-md-7">
+            <h2 class="mb-4">Resultados da Análise</h2>
+            {% if resultados %}
+                <div class="alert {{ 'alert-success' if resultados.status == 'APROVADO' else 'alert-danger' }} text-center">
+                    <h1 class="display-6 fw-bold">{{ resultados.status }}</h1>
+                    <p class="mb-0">A tensão no dormente ({{resultados.sigma}}) é {{ 'menor' if resultados.status == 'APROVADO' else 'MAIOR' }} que a admissível.</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="result-card bg-light border-secondary">
+                            <h6>Parâmetros de Carga</h6>
+                            <hr>
+                            <p class="mb-1">Espaçamento (a): <strong>{{ resultados.a }} cm</strong></p>
+                            
+                            <div class="mb-2 p-2 rounded" style="background-color: #e9ecef;">
+                                <p class="mb-0">Coef. Dinâmico (Cd): <strong>{{ resultados.Cd }}</strong></p>
+                                <small class="text-muted d-block" style="font-size: 0.75em;">Calculado: {{ resultados.Cd_calc }}</small>
+                                <small class="text-primary fw-bold" style="font-size: 0.75em;">{{ resultados.msg_cd }}</small>
+                            </div>
+
+                            <p class="mb-0">Carga no Dormente (P): <strong>{{ resultados.P_dormente }} kgf</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="result-card">
+                            <h6>Tensão de Flexão (σ)</h6>
+                            <div class="result-value {{ resultados.css_class }}">{{ resultados.sigma }}</div>
+                            <small class="text-muted">kgf/cm²</small>
+                            <hr>
+                            <p class="mb-1 small">Momento Máx: {{ resultados.M_max }} kgf.cm</p>
+                            <p class="mb-0 small">Módulo (W): {{ resultados.W }} cm³</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-light border text-center p-5">
+                    <h4>Aguardando Dados...</h4>
+                    <p>Preencha os dados ao lado para verificar as condições de trabalho do dormente.</p>
+                    <img src="https://thumbs.dreamstime.com/b/trilhos-e-dormentes-de-estrada-de-ferro-velhos-46036773.jpg" class="img-fluid opacity-50" style="max-height: 200px; border-radius: 10px;">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
