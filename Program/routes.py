@@ -1,7 +1,7 @@
 from .init import app, db, login_manager
 from flask import Flask, request, render_template, url_for, redirect, flash
 from flask_login import login_user, logout_user, current_user, login_required
-from .forms import registro, CalculoFerroviario, CalculoVelocidade, CalculoTrilho
+from .forms import registro, CalculoFerroviario, CalculoVelocidade, CalculoTrilho, CalculoDormente
 from .models import User
 
 
@@ -166,6 +166,64 @@ def trilho():
         }
 
     return render_template("trilho.html", form=form, resultados=resultados)
+
+@app.route('/dormente', methods=['GET', 'POST'])
+@login_required
+def dormente():
+    form = CalculoDormente()
+    resultados = None
+    
+    if form.validate_on_submit():
+        Pe = form.carga_por_eixo.data
+        V = form.velocidade.data
+        d_veiculo = form.distancia_eixos_veiculo.data # d
+        taxa = form.taxa_dormentacao.data
+        B = form.distancia_eixo_trilhos.data
+        y = form.largura_placa.data
+        L = form.comprimento_dormente.data
+        b = form.largura_dormente.data
+        t = form.altura_dormente.data # Espessura
+        sigma_adm = form.tensao_admissivel.data
+
+        a = 100000 / taxa
+
+        Pr = Pe / 2
+
+        Cd_calc = 1 + (V**2 / 30000)
+        
+        if Cd_calc < 1.4:
+            Cd = 1.4
+            msg_cd = "Adotado mínimo (1.4)"
+        else:
+            Cd = Cd_calc
+            msg_cd = "Adotado valor calculado"
+
+        fator_distribuicao = d_veiculo / a
+        P_dormente = (Pr / fator_distribuicao) * Cd
+
+        M_max = (P_dormente / 8) * (L - B - y)
+
+        W = (b * (t**2)) / 6
+
+        sigma = M_max / W
+
+        status = "APROVADO" if sigma < sigma_adm else "REPROVADO"
+        css_class = "text-success" if sigma < sigma_adm else "text-danger"
+
+        resultados = {
+            "a": round(a, 1),
+            "Cd": round(Cd, 3),
+            "Cd_calc": round(Cd_calc, 3),
+            "msg_cd": msg_cd,
+            "P_dormente": round(P_dormente, 2),
+            "M_max": round(M_max, 2),
+            "W": round(W, 2),
+            "sigma": round(sigma, 2),
+            "status": status,
+            "css_class": css_class
+        }
+
+    return render_template("dormente.html", form=form, resultados=resultados)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
