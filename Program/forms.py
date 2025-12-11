@@ -56,3 +56,20 @@ class CalculoTrilho(FlaskForm):
                                    validators=[InputRequired(), NumberRange(min=1500, max=1750, message="A tensão deve estar entre 1500 e 1750 conforme norma AREMA")])
     
     submit = SubmitField('Verificar Trilho')
+
+class CalculoDormente(FlaskForm):
+    carga_por_eixo = FloatField('Carga por Eixo (Pe) [kgf]', validators=[InputRequired()])
+    velocidade = FloatField('Velocidade (V) [km/h]', validators=[InputRequired()])
+    distancia_eixos_veiculo = FloatField('Distância entre eixos do veículo (d) [cm]', validators=[InputRequired()])
+    
+    taxa_dormentacao = FloatField('Taxa de Dormentação [dorm/km]', validators=[InputRequired()])
+    distancia_eixo_trilhos = FloatField('Distância eixo a eixo trilhos (B) [cm]', validators=[InputRequired()])
+    largura_placa = FloatField('Largura da Placa de Apoio (y) [cm]', validators=[InputRequired()])
+    
+    comprimento_dormente = FloatField('Comprimento do Dormente (L) [cm]', validators=[InputRequired()])
+    largura_dormente = FloatField('Largura do Dormente (b) [cm]', validators=[InputRequired()])
+    altura_dormente = FloatField('Altura/Espessura do Dormente (t) [cm]', validators=[InputRequired()])
+    
+    tensao_admissivel = FloatField('Tensão Admissível (σ adm) [kgf/cm²]', validators=[InputRequired()])
+    
+    submit = SubmitField('Verificar Dormente')
