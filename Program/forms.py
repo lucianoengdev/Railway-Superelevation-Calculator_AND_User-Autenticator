@@ -73,3 +73,16 @@ class CalculoDormente(FlaskForm):
     tensao_admissivel = FloatField('Tensão Admissível (σ adm) [kgf/cm²]', validators=[InputRequired()])
     
     submit = SubmitField('Verificar Dormente')
+
+class CalculoLastro(FlaskForm):
+    carga_por_eixo = FloatField('Carga por Eixo (Pe) [kgf]', validators=[InputRequired()])
+    velocidade = FloatField('Velocidade (V) [km/h]', validators=[InputRequired()])
+    distancia_eixos_veiculo = FloatField('Distância entre eixos do veículo (d) [cm]', validators=[InputRequired()])
+    
+    taxa_dormentacao = FloatField('Taxa de Dormentação [dorm/km]', validators=[InputRequired()])
+    largura_dormente = FloatField('Largura do Dormente (b) [cm]', validators=[InputRequired()])
+    
+    faixa_socaria = FloatField('Faixa de Socaria (fs) [cm]', validators=[InputRequired()], description="Geralmente 80cm a 100cm")
+    tensao_admissivel = FloatField('Tensão Adm. Sublastro (σ adm) [kgf/cm²]', validators=[InputRequired()], description="Capacidade de carga da plataforma")
+    
+    submit = SubmitField('Dimensionar Lastro')
