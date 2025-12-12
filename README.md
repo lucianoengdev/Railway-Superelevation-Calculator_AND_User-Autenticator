@@ -37,23 +37,30 @@ Validates the structural integrity of wooden sleepers (dormentes) under dynamic 
 2.  Dynamic Analysis: Applies the Dynamic Coefficient ($C_d$) to the static wheel load.
 3.  Stress Verification: Determines the maximum bending moment ($M_{max}$) and checks if the resulting flexural stress ($\sigma$) is within the timber's admissible limits ($\sigma_{adm}$).
 
+### 🪨 Module 5: Ballast Dimensioning (New in v1.4.0)
+Determines the required ballast layer thickness to protect the subgrade:
+1.  Talbot's Analysis: Calculates the minimum ballast depth ($h$) required to reduce the pressure at the sleeper interface ($\sigma_0$) to the subgrade's admissible limit ($\sigma_{adm}$).
+2.  Pressure Distribution: Generates an interactive chart to visualize how stress decreases with depth ($z$).
+3.  Dynamic Load: Considers the vehicle's speed and dynamic impact ($C_d$) on the load distribution.
+
 ## 🛠️ Technologies Used
 * Language: Python
 * Web Framework: Flask
 * Database: SQLite (via SQLAlchemy)
 * Security: Flask-Bcrypt, Flask-Login, Flask-WTF
-* Frontend: HTML5, CSS3, Bootstrap 5, Jinja2
+* Frontend: HTML5, CSS3, Bootstrap 5, Jinja2, Chart.js (for data visualization)
 * Math: Custom engineering algorithms based on standard railway mechanics literature (e.g., BRINA, NABAIS).
 
 ## 🚀 Project Ambition
 The ambition of this project is to become a handy, quick-reference tool for railway engineers to validate track parameters instantly. It aims to bridge the gap between theoretical formulas and practical, on-the-fly verification in the field or office.
 
 ## 📍 Current Stage
-Status: Active (v1.3.0)
+Status: Active (v1.4.0)
 * v1.0: Superelevation Calculator & Auth System.
 * v1.1: Added Speed & Geometry Calculator module.
 * v1.2: Added Rail Dimensioning (Structural Analysis) module.
-* v1.3: Added Sleeper Dimensioning (Dormente) module.
+* v1.3: Added railroad tie Dimensioning module.
+* v1.4: Added Ballast Dimensioning module with interactive charts.
 
 
 The application is fully functional. Users can register, log in, and perform complex geometric and structural calculations using real-world variables.
